@@ -30,8 +30,8 @@ import UnitViewer from './components/UnitViewer';
 import QuizSection from './components/QuizSection';
 
 export default function App() {
-  // Navigation Tabs: 'modules' | 'design-system'
-  const [activeTab, setActiveTab] = useState<'modules' | 'design-system'>('modules');
+  // Navigation Tabs: 'home' | 'modules' | 'design-system'
+  const [activeTab, setActiveTab] = useState<'home' | 'modules' | 'design-system'>('home');
   
   // Active learning level: SD | SMP | SMA | UMUM
   const [activeLevel, setActiveLevel] = useState<LevelKey>('SD');
@@ -93,12 +93,19 @@ export default function App() {
   const activeLevelData = getActiveLevelData();
   const activeUnit = getActiveUnitData();
 
-  // Calculate completion percentage for the active level
-  const totalUnitsInLevel = activeLevelData.units.length;
-  const completedInLevel = activeLevelData.units.filter(u => completedUnits.includes(u.id)).length;
-  const completionPercentage = totalUnitsInLevel > 0 
-    ? Math.round((completedInLevel / totalUnitsInLevel) * 100) 
-    : 0;
+  // Calculate completion percentage for any level
+  const getLevelStats = (key: LevelKey) => {
+    const lvl = LEARNING_LEVELS.find(l => l.key === key) || LEARNING_LEVELS[0];
+    const total = lvl.units.length;
+    const completed = lvl.units.filter(u => completedUnits.includes(u.id)).length;
+    const pct = total > 0 ? Math.round((completed / total) * 100) : 0;
+    return { total, completed, pct };
+  };
+
+  const activeLevelStats = getLevelStats(activeLevel);
+  const totalUnitsInLevel = activeLevelStats.total;
+  const completedInLevel = activeLevelStats.completed;
+  const completionPercentage = activeLevelStats.pct;
 
   // Filter levels or units if search is entered
   const filteredUnits = activeLevelData.units.filter(unit => 
@@ -106,6 +113,15 @@ export default function App() {
     unit.description.toLowerCase().includes(searchQuery.toLowerCase()) ||
     unit.focus.toLowerCase().includes(searchQuery.toLowerCase())
   );
+
+  const handleSelectLevelFromHome = (key: LevelKey) => {
+    setActiveLevel(key);
+    const levelData = LEARNING_LEVELS.find(l => l.key === key);
+    if (levelData && levelData.units.length > 0) {
+      setActiveUnitId(levelData.units[0].id);
+    }
+    setActiveTab('modules');
+  };
 
   return (
     <div className="min-h-screen bg-slate-50/60 text-slate-800 selection:bg-indigo-100 selection:text-indigo-900 antialiased font-sans flex flex-col">
@@ -115,7 +131,7 @@ export default function App() {
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-16 flex items-center justify-between gap-4">
           
           {/* Logo Brand */}
-          <div className="flex items-center gap-3 cursor-pointer" onClick={() => setActiveTab('modules')}>
+          <div className="flex items-center gap-3 cursor-pointer" onClick={() => setActiveTab('home')}>
             <div className="h-10 w-10 rounded-xl bg-gradient-to-tr from-indigo-600 to-indigo-500 text-white flex items-center justify-center shadow-md shadow-indigo-200">
               <GraduationCap className="h-5.5 w-5.5" />
             </div>
@@ -132,25 +148,35 @@ export default function App() {
           {/* Center Tabs Switcher */}
           <nav className="flex items-center bg-slate-100/80 p-1 rounded-xl">
             <button
+              onClick={() => setActiveTab('home')}
+              className={`px-3 sm:px-4 py-2 rounded-lg text-xs font-semibold tracking-wide transition-all ${
+                activeTab === 'home'
+                  ? 'bg-white text-slate-900 shadow-sm'
+                  : 'text-slate-500 hover:text-slate-900'
+              }`}
+            >
+              Beranda
+            </button>
+            <button
               onClick={() => setActiveTab('modules')}
-              className={`px-4 py-2 rounded-lg text-xs font-semibold tracking-wide transition-all flex items-center gap-2 ${
+              className={`px-3 sm:px-4 py-2 rounded-lg text-xs font-semibold tracking-wide transition-all flex items-center gap-1.5 ${
                 activeTab === 'modules'
                   ? 'bg-white text-slate-900 shadow-sm'
                   : 'text-slate-500 hover:text-slate-900'
               }`}
             >
-              <BookOpen className="h-4 w-4" />
-              Modul Pembelajaran
+              <BookOpen className="h-3.5 w-3.5" />
+              Modul
             </button>
             <button
               onClick={() => setActiveTab('design-system')}
-              className={`px-4 py-2 rounded-lg text-xs font-semibold tracking-wide transition-all flex items-center gap-2 ${
+              className={`px-3 sm:px-4 py-2 rounded-lg text-xs font-semibold tracking-wide transition-all flex items-center gap-1.5 ${
                 activeTab === 'design-system'
                   ? 'bg-white text-slate-900 shadow-sm'
                   : 'text-slate-500 hover:text-slate-900'
               }`}
             >
-              <Layers className="h-4 w-4" />
+              <Layers className="h-3.5 w-3.5" />
               Design System
             </button>
           </nav>
@@ -166,6 +192,225 @@ export default function App() {
       {/* 2. Main Content Wrapper */}
       <main className="flex-1 max-w-7xl w-full mx-auto px-4 sm:px-6 lg:px-8 py-8">
         <AnimatePresence mode="wait">
+          
+          {/* TAB 0: HOME PAGE (HALAMAN UTAMA) */}
+          {activeTab === 'home' && (
+            <motion.div
+              key="home-tab"
+              initial={{ opacity: 0, y: 15 }}
+              animate={{ opacity: 1, y: 0 }}
+              exit={{ opacity: 0, y: -15 }}
+              transition={{ duration: 0.3 }}
+              className="space-y-12"
+            >
+              {/* Hero Banner Section */}
+              <div className="bg-gradient-to-r from-slate-900 via-indigo-950 to-slate-900 rounded-3xl p-8 md:p-12 text-white shadow-xl relative overflow-hidden text-center md:text-left">
+                {/* Decorative glowing backdrops */}
+                <div className="absolute top-0 right-0 w-80 h-80 bg-indigo-500/15 rounded-full blur-3xl"></div>
+                <div className="absolute -bottom-10 left-10 w-64 h-64 bg-emerald-500/10 rounded-full blur-3xl"></div>
+                
+                <div className="relative z-10 max-w-4xl space-y-5">
+                  <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-indigo-500/20 border border-indigo-500/30 text-indigo-300 text-xs font-mono">
+                    <Award className="h-3.5 w-3.5 text-indigo-400 animate-pulse" />
+                    PORTAL BELAJAR BAHASA INGGRIS INTERAKTIF
+                  </div>
+                  <h1 className="font-display font-extrabold text-3xl md:text-5xl lg:text-6xl tracking-tight text-white leading-tight">
+                    Belajar Bahasa Inggris <br className="hidden md:inline" />
+                    Lebih Terarah & Menyenangkan
+                  </h1>
+                  <p className="font-sans text-sm md:text-lg text-slate-300 leading-relaxed font-light max-w-2xl">
+                    Temukan modul pembelajaran mandiri yang dikelompokkan secara rapi per level dari SD, SMP, SMA, hingga UMUM. Dilengkapi audio pelafalan asli (native-speaker TTS) dan kuis sandbox interaktif.
+                  </p>
+                  
+                  <div className="pt-2 flex flex-wrap justify-center md:justify-start gap-4">
+                    <a
+                      href="#tingkat-pendidikan"
+                      className="px-6 py-3 bg-indigo-600 hover:bg-indigo-500 text-white font-semibold text-sm rounded-xl transition-all shadow-lg shadow-indigo-500/20 flex items-center gap-2"
+                    >
+                      Pilih Tingkat Pembelajaran <ChevronRight className="h-4 w-4" />
+                    </a>
+                    <button
+                      onClick={() => setActiveTab('design-system')}
+                      className="px-6 py-3 bg-slate-800/80 hover:bg-slate-800 text-slate-200 hover:text-white border border-slate-700/80 font-semibold text-sm rounded-xl transition-all"
+                    >
+                      Lihat Panduan Design System
+                    </button>
+                  </div>
+                </div>
+              </div>
+
+              {/* Learning Features Highlight Cards */}
+              <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+                <div className="bg-white border border-slate-100 p-6 rounded-2xl shadow-sm space-y-3">
+                  <div className="h-10 w-10 bg-emerald-50 text-emerald-600 rounded-xl flex items-center justify-center font-bold">
+                    01
+                  </div>
+                  <h3 className="font-display font-bold text-base text-slate-800">4 Level Pendidikan</h3>
+                  <p className="text-xs text-slate-500 leading-relaxed font-light">
+                    Mulai dari dasar kosakata (SD), struktur kalimat dasar (SMP), argumen kritis (SMA), hingga penulisan CV & wawancara (UMUM).
+                  </p>
+                </div>
+
+                <div className="bg-white border border-slate-100 p-6 rounded-2xl shadow-sm space-y-3">
+                  <div className="h-10 w-10 bg-indigo-50 text-indigo-600 rounded-xl flex items-center justify-center font-bold">
+                    02
+                  </div>
+                  <h3 className="font-display font-bold text-base text-slate-800">Audio Pelafalan TTS</h3>
+                  <p className="text-xs text-slate-500 leading-relaxed font-light">
+                    Tingkatkan keahlian Listening & Speaking dengan mengeklik ikon audio untuk melafalkan kata dan kalimat secara langsung.
+                  </p>
+                </div>
+
+                <div className="bg-white border border-slate-100 p-6 rounded-2xl shadow-sm space-y-3">
+                  <div className="h-10 w-10 bg-amber-50 text-amber-600 rounded-xl flex items-center justify-center font-bold">
+                    03
+                  </div>
+                  <h3 className="font-display font-bold text-base text-slate-800">Interactive Quiz</h3>
+                  <p className="text-xs text-slate-500 leading-relaxed font-light">
+                    Uji pemahaman mandiri di akhir setiap unit dengan Quiz Sandbox interaktif, lengkap dengan pembahasan mendalam dan skor real-time.
+                  </p>
+                </div>
+
+                <div className="bg-white border border-slate-100 p-6 rounded-2xl shadow-sm space-y-3">
+                  <div className="h-10 w-10 bg-rose-50 text-rose-600 rounded-xl flex items-center justify-center font-bold">
+                    04
+                  </div>
+                  <h3 className="font-display font-bold text-base text-slate-800">Visual Design System</h3>
+                  <p className="text-xs text-slate-500 leading-relaxed font-light">
+                    Portal didesain secara teliti menggunakan token tipografi & warna kontras tinggi, memberikan kenyamanan membaca maksimal bagi murid.
+                  </p>
+                </div>
+              </div>
+
+              {/* LEVEL EDUCATION CARDS SECTION */}
+              <div id="tingkat-pendidikan" className="space-y-6 scroll-mt-24">
+                <div className="text-center max-w-2xl mx-auto space-y-2">
+                  <span className="text-xs font-mono font-semibold text-indigo-600 uppercase tracking-widest bg-indigo-50 px-2.5 py-1 rounded-full">
+                    KATEGORI UTAMA
+                  </span>
+                  <h2 className="font-display font-bold text-2xl md:text-4xl text-slate-900 tracking-tight">
+                    Pilih Level Pembelajaran Anda
+                  </h2>
+                  <p className="text-sm text-slate-500 font-light leading-relaxed">
+                    Setiap tingkatan didesain secara ergonomis dengan konten visual, fokus tata bahasa, dan tingkat kesulitan kosakata yang disesuaikan dengan kebutuhan belajar.
+                  </p>
+                </div>
+
+                {/* The 4 main level cards */}
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-8 pt-4">
+                  {LEARNING_LEVELS.map((level, idx) => {
+                    const stats = getLevelStats(level.key);
+                    
+                    return (
+                      <div
+                        key={level.key}
+                        onClick={() => handleSelectLevelFromHome(level.key)}
+                        className="group bg-white border border-slate-100 rounded-3xl overflow-hidden shadow-sm hover:shadow-xl transition-all duration-300 hover:-translate-y-1 cursor-pointer flex flex-col justify-between"
+                      >
+                        {/* Level Header Accent Card */}
+                        <div className={`p-6 text-white relative ${level.colorTheme.primary} overflow-hidden`}>
+                          <div className="absolute top-0 right-0 w-32 h-32 bg-white/10 rounded-full -mr-10 -mt-10 blur-xl"></div>
+                          
+                          <div className="flex justify-between items-start relative z-10">
+                            <div>
+                              <span className="font-mono text-xs font-bold uppercase bg-white/20 px-2.5 py-1 rounded-md tracking-wider">
+                                LEVEL {level.badge}
+                              </span>
+                              <h3 className="font-display font-extrabold text-2xl tracking-tight mt-3">
+                                {level.name}
+                              </h3>
+                            </div>
+                            <span className="h-12 w-12 rounded-2xl bg-white/10 backdrop-blur-md flex items-center justify-center font-display font-black text-xl text-white">
+                              {level.key}
+                            </span>
+                          </div>
+                        </div>
+
+                        {/* Level content section */}
+                        <div className="p-6 md:p-8 space-y-6 flex-1 flex flex-col justify-between">
+                          <div className="space-y-5">
+                            {/* Audience info */}
+                            <p className="font-sans text-xs md:text-sm text-slate-500 leading-relaxed font-light">
+                              {level.audience}
+                            </p>
+
+                            {/* Units Preview list */}
+                            <div className="space-y-3">
+                              <span className="text-[10px] font-mono text-slate-400 font-semibold uppercase tracking-wider block">
+                                RENCANA PEMBELAJARAN UNIT:
+                              </span>
+                              <div className="space-y-2.5">
+                                {level.units.map((unit) => {
+                                  const isCompleted = completedUnits.includes(unit.id);
+                                  return (
+                                    <div key={unit.id} className="flex items-start gap-2.5 text-xs">
+                                      <div className={`mt-0.5 p-0.5 rounded-full flex-shrink-0 ${
+                                        isCompleted ? 'bg-emerald-100 text-emerald-700' : 'bg-slate-100 text-slate-400'
+                                      }`}>
+                                        <CheckCircle className="h-3.5 w-3.5" />
+                                      </div>
+                                      <div className="min-w-0">
+                                        <p className="font-semibold text-slate-700 truncate">
+                                          Unit {unit.number}: {unit.title}
+                                        </p>
+                                        <p className="text-[10.5px] text-slate-400 truncate">
+                                          Fokus: {unit.focus}
+                                        </p>
+                                      </div>
+                                    </div>
+                                  );
+                                })}
+                              </div>
+                            </div>
+                          </div>
+
+                          {/* Progress footer inside home card */}
+                          <div className="pt-6 border-t border-slate-50 space-y-3 mt-4">
+                            <div className="flex justify-between items-center text-xs">
+                              <span className="text-slate-400 font-sans font-light">Progress Pembelajaran:</span>
+                              <span className="font-mono font-bold text-slate-700">{stats.completed} dari {stats.total} Selesai</span>
+                            </div>
+                            
+                            {/* Linear progress bar */}
+                            <div className="h-1.5 w-full bg-slate-100 rounded-full overflow-hidden">
+                              <div 
+                                className={`h-full ${level.colorTheme.primary} transition-all duration-300`}
+                                style={{ width: `${stats.pct}%` }}
+                              ></div>
+                            </div>
+
+                            <div className="pt-2 flex justify-between items-center">
+                              <span className="text-[11px] text-slate-400 italic">Klik kartu untuk menjelajah</span>
+                              <span className={`text-xs font-semibold flex items-center gap-1 group-hover:translate-x-1 transition-transform ${level.colorTheme.text}`}>
+                                Mulai Belajar <ChevronRight className="h-4 w-4" />
+                              </span>
+                            </div>
+                          </div>
+                        </div>
+
+                      </div>
+                    );
+                  })}
+                </div>
+              </div>
+
+              {/* Bottom Quick Tips */}
+              <div className="bg-slate-50 border border-slate-100 p-6 rounded-2xl flex flex-col md:flex-row md:items-center justify-between gap-6 max-w-4xl mx-auto">
+                <div className="flex gap-3">
+                  <div className="h-10 w-10 bg-indigo-50 text-indigo-600 rounded-xl flex items-center justify-center flex-shrink-0">
+                    <Info className="h-5 w-5" />
+                  </div>
+                  <div className="space-y-0.5">
+                    <h4 className="font-display font-semibold text-xs text-slate-800">Catatan Penggunaan Audio</h4>
+                    <p className="text-[11px] text-slate-500 leading-relaxed font-light">
+                      Portal ini menggunakan Text-to-Speech bawaan browser Anda. Pastikan volume suara perangkat Anda aktif saat mengeklik ikon audio untuk mendengarkan lafal bahasa Inggris asli.
+                    </p>
+                  </div>
+                </div>
+              </div>
+
+            </motion.div>
+          )}
           
           {/* TAB 1: LEARNING PORTAL */}
           {activeTab === 'modules' && (
