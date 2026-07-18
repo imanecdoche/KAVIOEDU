@@ -18,65 +18,32 @@ interface UnitViewerProps {
     hover: string;
     text: string;
   };
-  inspectorActive: boolean;
 }
 
 // Wrapper for inspectable design system items
 interface InspectableProps {
   token: 'Title' | 'h1' | 'h2' | 'h3' | 'h4' | 'body' | 'descr' | 'quote' | 'label' | 'caption' | 'highlighted text';
   children: React.ReactNode;
-  active: boolean;
+  active?: boolean;
   inline?: boolean;
 }
 
-function Inspectable({ token, children, active, inline = false }: InspectableProps) {
+function Inspectable({ token, children }: InspectableProps) {
   const tokenInfo = TYPOGRAPHY_HIERARCHY.find(t => t.name === token);
   const classes = tokenInfo?.class || '';
 
-  if (!active) {
-    if (token === 'quote') {
-      return <blockquote className={classes}>{children}</blockquote>;
-    }
-    if (token === 'highlighted text') {
-      return <span className={classes}>{children}</span>;
-    }
-    return <div className={classes}>{children}</div>;
+  if (token === 'quote') {
+    return <blockquote className={classes}>{children}</blockquote>;
   }
-
-  const containerClasses = inline 
-    ? 'relative inline-block border border-dashed border-indigo-400 hover:bg-indigo-50/50 rounded px-1 group/inspect cursor-help'
-    : 'relative border border-dashed border-sky-400 hover:border-sky-500 hover:bg-sky-50/20 rounded-xl p-3 my-2 group/inspect transition-all cursor-help';
-
-  return (
-    <div className={containerClasses}>
-      {/* Visual Design System Tag */}
-      <span className="absolute -top-2.5 right-3 bg-slate-900 text-white text-[9px] font-mono font-semibold px-2 py-0.5 rounded-full opacity-80 group-hover/inspect:opacity-100 transition-opacity z-20 shadow-sm pointer-events-none">
-        [{token}]
-      </span>
-      
-      {/* Hover tooltip displaying utility classes */}
-      <div className="absolute left-1/2 -translate-x-1/2 bottom-full mb-1.5 hidden group-hover/inspect:flex flex-col w-72 bg-slate-950 text-white p-3 rounded-lg text-[10.5px] font-mono leading-relaxed z-30 shadow-lg pointer-events-none">
-        <div className="flex justify-between items-center border-b border-slate-800 pb-1 mb-1">
-          <span className="font-bold text-sky-400">{token.toUpperCase()} TOKEN</span>
-          <span className="text-slate-500">Tailwind CSS</span>
-        </div>
-        <p className="text-slate-300 font-light font-sans mb-1">{tokenInfo?.description}</p>
-        <p className="text-indigo-300 break-all">{classes}</p>
-      </div>
-
-      {token === 'quote' ? (
-        <blockquote className={classes}>{children}</blockquote>
-      ) : token === 'highlighted text' ? (
-        <span className={classes}>{children}</span>
-      ) : (
-        <div className={classes}>{children}</div>
-      )}
-    </div>
-  );
+  if (token === 'highlighted text') {
+    return <span className={classes}>{children}</span>;
+  }
+  return <div className={classes}>{children}</div>;
 }
 
-export default function UnitViewer({ unit, colorTheme, inspectorActive }: UnitViewerProps) {
+export default function UnitViewer({ unit, colorTheme }: UnitViewerProps) {
   const [activeSpeech, setActiveSpeech] = useState<string | null>(null);
+  const inspectorActive = false;
 
   const speakText = (text: string, id: string) => {
     if (!('speechSynthesis' in window)) return;
@@ -125,7 +92,6 @@ export default function UnitViewer({ unit, colorTheme, inspectorActive }: UnitVi
                 <VocabularyCard 
                   key={vocab.id} 
                   item={vocab} 
-                  inspectorActive={inspectorActive} 
                 />
               ))}
             </div>

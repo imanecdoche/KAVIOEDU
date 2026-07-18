@@ -18,10 +18,9 @@ interface QuizSectionProps {
     text: string;
   };
   onUnitCompleted?: () => void;
-  inspectorActive: boolean;
 }
 
-export default function QuizSection({ questions, colorTheme, onUnitCompleted, inspectorActive }: QuizSectionProps) {
+export default function QuizSection({ questions, colorTheme, onUnitCompleted }: QuizSectionProps) {
   const [currentIdx, setCurrentIdx] = useState(0);
   const [selectedOption, setSelectedOption] = useState<number | null>(null);
   const [isAnswered, setIsAnswered] = useState(false);
@@ -78,17 +77,9 @@ export default function QuizSection({ questions, colorTheme, onUnitCompleted, in
 
   return (
     <div 
-      className={`bg-white rounded-2xl border border-slate-100 p-6 md:p-8 shadow-sm relative ${
-        inspectorActive ? 'border-2 border-dashed border-sky-400 p-1' : ''
-      }`}
+      className="bg-white rounded-2xl border border-slate-100 p-6 md:p-8 shadow-sm relative"
       id="quiz-sandbox"
     >
-      {inspectorActive && (
-        <span className="absolute -top-3 left-4 bg-sky-500 text-white text-[9px] font-mono px-1.5 py-0.5 rounded-full z-30 shadow-sm">
-          Interactive Section & [quiz-sandbox]
-        </span>
-      )}
-
       {!quizFinished ? (
         <div className="space-y-6">
           {/* Header Progress */}

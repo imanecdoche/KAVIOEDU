@@ -11,10 +11,9 @@ import { VocabularyItem } from '../types';
 interface VocabularyCardProps {
   key?: string;
   item: VocabularyItem;
-  inspectorActive: boolean;
 }
 
-export default function VocabularyCard({ item, inspectorActive }: VocabularyCardProps) {
+export default function VocabularyCard({ item }: VocabularyCardProps) {
   const [isFlipped, setIsFlipped] = useState(false);
   const [isPlaying, setIsPlaying] = useState(false);
 
@@ -58,18 +57,10 @@ export default function VocabularyCard({ item, inspectorActive }: VocabularyCard
 
   return (
     <div 
-      className={`relative h-64 w-full cursor-pointer group perspective ${
-        inspectorActive ? 'border-2 border-dashed border-sky-400 p-0.5 rounded-2xl' : ''
-      }`}
+      className="relative h-64 w-full cursor-pointer group perspective"
       id={`vocab-card-${item.id}`}
       onClick={() => setIsFlipped(!isFlipped)}
     >
-      {inspectorActive && (
-        <span className="absolute -top-3 left-4 bg-sky-500 text-white text-[9px] font-mono px-1.5 py-0.5 rounded-full z-30 shadow-sm">
-          Interactive Card & [vocabulary]
-        </span>
-      )}
-
       {/* Card Inner Container for flipping */}
       <motion.div
         className="relative w-full h-full duration-500 transform-style-3d shadow-sm hover:shadow-md rounded-2xl border border-slate-100"

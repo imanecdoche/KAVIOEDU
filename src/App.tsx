@@ -25,22 +25,18 @@ import {
 
 import { LEARNING_LEVELS } from './data/learningModules';
 import { LevelKey, LearningUnit } from './types';
-import DesignSystemViewer from './components/DesignSystemViewer';
 import UnitViewer from './components/UnitViewer';
 import QuizSection from './components/QuizSection';
 
 export default function App() {
-  // Navigation Tabs: 'home' | 'modules' | 'design-system'
-  const [activeTab, setActiveTab] = useState<'home' | 'modules' | 'design-system'>('home');
+  // Navigation Tabs: 'home' | 'modules'
+  const [activeTab, setActiveTab] = useState<'home' | 'modules'>('home');
   
   // Active learning level: SD | SMP | SMA | UMUM
   const [activeLevel, setActiveLevel] = useState<LevelKey>('SD');
   
   // Active unit in the selected level
   const [activeUnitId, setActiveUnitId] = useState<string>('sd-u1');
-  
-  // Inspector tool active state
-  const [inspectorActive, setInspectorActive] = useState<boolean>(true);
 
   // Completed units persistence using localStorage
   const [completedUnits, setCompletedUnits] = useState<string[]>([]);
@@ -168,17 +164,6 @@ export default function App() {
               <BookOpen className="h-3.5 w-3.5" />
               Modul
             </button>
-            <button
-              onClick={() => setActiveTab('design-system')}
-              className={`px-3 sm:px-4 py-2 rounded-lg text-xs font-semibold tracking-wide transition-all flex items-center gap-1.5 ${
-                activeTab === 'design-system'
-                  ? 'bg-white text-slate-900 shadow-sm'
-                  : 'text-slate-500 hover:text-slate-900'
-              }`}
-            >
-              <Layers className="h-3.5 w-3.5" />
-              Design System
-            </button>
           </nav>
 
           {/* Right Header Element: Brief Info badge */}
@@ -229,18 +214,12 @@ export default function App() {
                     >
                       Pilih Tingkat Pembelajaran <ChevronRight className="h-4 w-4" />
                     </a>
-                    <button
-                      onClick={() => setActiveTab('design-system')}
-                      className="px-6 py-3 bg-slate-800/80 hover:bg-slate-800 text-slate-200 hover:text-white border border-slate-700/80 font-semibold text-sm rounded-xl transition-all"
-                    >
-                      Lihat Panduan Design System
-                    </button>
                   </div>
                 </div>
               </div>
 
               {/* Learning Features Highlight Cards */}
-              <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+              <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
                 <div className="bg-white border border-slate-100 p-6 rounded-2xl shadow-sm space-y-3">
                   <div className="h-10 w-10 bg-emerald-50 text-emerald-600 rounded-xl flex items-center justify-center font-bold">
                     01
@@ -268,16 +247,6 @@ export default function App() {
                   <h3 className="font-display font-bold text-base text-slate-800">Interactive Quiz</h3>
                   <p className="text-xs text-slate-500 leading-relaxed font-light">
                     Uji pemahaman mandiri di akhir setiap unit dengan Quiz Sandbox interaktif, lengkap dengan pembahasan mendalam dan skor real-time.
-                  </p>
-                </div>
-
-                <div className="bg-white border border-slate-100 p-6 rounded-2xl shadow-sm space-y-3">
-                  <div className="h-10 w-10 bg-rose-50 text-rose-600 rounded-xl flex items-center justify-center font-bold">
-                    04
-                  </div>
-                  <h3 className="font-display font-bold text-base text-slate-800">Visual Design System</h3>
-                  <p className="text-xs text-slate-500 leading-relaxed font-light">
-                    Portal didesain secara teliti menggunakan token tipografi & warna kontras tinggi, memberikan kenyamanan membaca maksimal bagi murid.
                   </p>
                 </div>
               </div>
@@ -620,38 +589,6 @@ export default function App() {
                 {/* READING AREA: Active Unit module render + Inspector option (8 columns) */}
                 <div className="lg:col-span-8 space-y-8">
                   
-                  {/* DESIGN INSPECTOR CONTROL BANNER */}
-                  <div className="bg-gradient-to-r from-sky-500/10 via-indigo-500/10 to-transparent border border-sky-100/50 rounded-2xl p-4 flex flex-col sm:flex-row sm:items-center justify-between gap-4">
-                    <div className="flex gap-3">
-                      <div className="p-2 rounded-xl bg-white border border-sky-100 text-sky-600 shadow-sm self-start flex-shrink-0">
-                        <Sliders className="h-4 w-4" />
-                      </div>
-                      <div className="space-y-0.5">
-                        <h4 className="font-display font-bold text-xs text-slate-800 flex items-center gap-1.5">
-                          Design System Inspector
-                          <span className="inline-flex items-center px-1.5 py-0.5 rounded bg-sky-100 text-sky-800 text-[9px] font-mono font-bold tracking-wider">
-                            EXCLUSIVE TOOL
-                          </span>
-                        </h4>
-                        <p className="text-[11px] text-slate-500 leading-relaxed font-light">
-                          Ketika diaktifkan, modul akan menampilkan penanda visual token tipografi. Arahkan mouse untuk melihat rincian utilitas Tailwind.
-                        </p>
-                      </div>
-                    </div>
-
-                    <button
-                      onClick={() => setInspectorActive(!inspectorActive)}
-                      className={`px-4 py-2 rounded-xl text-xs font-semibold tracking-wide transition-all self-start sm:self-auto flex items-center gap-2 ${
-                        inspectorActive
-                          ? 'bg-sky-500 text-white shadow-md shadow-sky-100 hover:bg-sky-600'
-                          : 'bg-white hover:bg-slate-50 text-slate-600 border border-slate-200'
-                      }`}
-                    >
-                      <Eye className="h-3.5 w-3.5" />
-                      {inspectorActive ? 'Matikan Detektor' : 'Aktifkan Detektor'}
-                    </button>
-                  </div>
-
                   {/* ACTIVE MODULE CONTAINER */}
                   {activeUnit ? (
                     <div className="bg-white border border-slate-100 rounded-3xl p-6 md:p-8 shadow-sm space-y-12">
@@ -660,7 +597,6 @@ export default function App() {
                       <UnitViewer 
                         unit={activeUnit} 
                         colorTheme={activeLevelData.colorTheme} 
-                        inspectorActive={inspectorActive} 
                       />
 
                       {/* Divider */}
@@ -680,7 +616,6 @@ export default function App() {
                         <QuizSection 
                           questions={activeUnit.quiz} 
                           colorTheme={activeLevelData.colorTheme}
-                          inspectorActive={inspectorActive}
                           onUnitCompleted={() => {
                             if (!completedUnits.includes(activeUnit.id)) {
                               handleToggleComplete(activeUnit.id);
@@ -701,19 +636,6 @@ export default function App() {
 
               </div>
 
-            </motion.div>
-          )}
-
-          {/* TAB 2: DESIGN SYSTEM DOCUMENTATION & PLAYGROUND */}
-          {activeTab === 'design-system' && (
-            <motion.div
-              key="design-system-tab"
-              initial={{ opacity: 0, y: 15 }}
-              animate={{ opacity: 1, y: 0 }}
-              exit={{ opacity: 0, y: -15 }}
-              transition={{ duration: 0.3 }}
-            >
-              <DesignSystemViewer />
             </motion.div>
           )}
 
