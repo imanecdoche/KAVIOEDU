@@ -23,120 +23,464 @@ export const LEARNING_LEVELS: LevelConfig[] = [
       {
         id: 'sd-u1',
         number: 1,
-        title: 'Numbers & Colors (Angka & Warna)',
-        description: 'Mempelajari angka 1-10 dan warna-warna dasar di sekitar kita secara interaktif.',
-        focus: 'Kosakata Dasar & Visualisasi',
+        title: 'All About Me (Semua Tentangku)',
+        description: 'Belajar cara memperkenalkan diri dalam bahasa Inggris secara lengkap dari nama, umur, hobi, hingga cita-cita.',
+        focus: 'Perkenalan Diri (Introduction)',
         sections: [
           {
             id: 'sd-u1-s1',
             type: 'intro',
-            title: 'Welcome to English Level SD!',
-            introText: 'Halo Adik-adik! Selamat datang di modul pertama. Di sini kita akan belajar cara menyebutkan angka dan warna dalam Bahasa Inggris. Belajar bahasa Inggris itu sangat menyenangkan lho! Yuk kita mulai dengan mengenal angka dan warna!'
+            title: 'Welcome to Unit 1: All About Me',
+            introText: `Halo, teman-teman! 👋
+
+Di unit ini, kita akan belajar cara **memperkenalkan diri dalam bahasa Inggris**.
+
+Memperkenalkan diri artinya kita memberi tahu orang lain tentang diri kita, seperti:
+
+- nama
+- asal
+- umur
+- hobi
+- hal yang kita suka
+- benda atau hewan yang kita punya
+- cita-cita
+
+Kita akan belajar pelan-pelan. Tidak perlu takut salah. Yang penting kamu mau mencoba! 😊`
           },
           {
             id: 'sd-u1-s2',
-            type: 'vocabulary',
-            title: 'Vocabulary: Numbers (Angka)',
-            vocabulary: [
-              {
-                id: 'sd-v1',
-                word: 'One',
-                partOfSpeech: 'noun / numeral',
-                pronunciation: '/wʌn/',
-                meaning: 'Satu',
-                example: 'I have one red apple.',
-                exampleTranslation: 'Saya punya satu apel merah.'
-              },
-              {
-                id: 'sd-v2',
-                word: 'Three',
-                partOfSpeech: 'noun / numeral',
-                pronunciation: '/θriː/',
-                meaning: 'Tiga',
-                example: 'There are three birds in the sky.',
-                exampleTranslation: 'Ada tiga burung di langit.'
-              },
-              {
-                id: 'sd-v3',
-                word: 'Yellow',
-                partOfSpeech: 'adjective',
-                pronunciation: '/ˈjel.əʊ/',
-                meaning: 'Kuning',
-                example: 'The sun is big and yellow.',
-                exampleTranslation: 'Matahari itu besar dan berwarna kuning.'
-              },
-              {
-                id: 'sd-v4',
-                word: 'Blue',
-                partOfSpeech: 'adjective',
-                pronunciation: '/bluː/',
-                meaning: 'Biru',
-                example: 'My school uniform is blue.',
-                exampleTranslation: 'Seragam sekolahku berwarna biru.'
-              }
-            ]
+            type: 'intro',
+            title: 'Tujuan Belajar',
+            introText: `Setelah belajar unit ini, kamu diharapkan bisa:
+
+1. Mengucapkan kalimat perkenalan sederhana dalam bahasa Inggris.
+2. Menyebutkan nama, umur, asal, hobi, kesukaan, benda/hewan yang dimiliki, dan cita-cita.
+3. Memahami arti kalimat perkenalan dalam bahasa Indonesia.
+4. Membuat teks perkenalan diri sendiri.
+5. Berani berbicara di depan teman atau tutor.`
           },
           {
             id: 'sd-u1-s3',
-            type: 'grammar',
-            title: 'Simple Rule: Adjective + Noun',
-            grammarExplanation: {
-              pattern: 'Color (Warna) + Object (Benda)',
-              description: 'Dalam Bahasa Inggris, warna diletakkan SEBELUM nama benda. Ini berbeda dengan Bahasa Indonesia yang meletakkan warna di belakang benda.',
-              examples: [
-                { form: 'Red apple', translation: 'Apel merah (Bukan "Apple red")' },
-                { form: 'Blue book', translation: 'Buku biru (Bukan "Book blue")' },
-                { form: 'Yellow banana', translation: 'Pisang kuning' }
-              ],
-              notes: 'Ingat! Selalu letakkan warnanya dulu baru bendanya ya!'
-            }
+            type: 'intro',
+            title: '1. THE COMPLETE INTRODUCTION',
+            introText: `### **Teks Perkenalan Lengkap**
+
+Yuk, baca contoh perkenalan di bawah ini.
+
+Kamu bisa mengganti bagian kosong sesuai dengan data dirimu sendiri.
+
+> **"Hello! My name is [nama kamu]. I am from [asal kamu]. I am [umur kamu] years old. My hobby is [hobi kamu]. I like [hal yang kamu suka]. I have a [benda/hewan] at [tempat]. My dream is being a [cita-cita kamu]. Nice to meet you!"**
+
+### **Arti dalam Bahasa Indonesia**
+
+> **"Halo! Nama saya adalah [nama kamu]. Saya berasal dari [asal kamu]. Umur saya [umur kamu] tahun. Hobi saya adalah [hobi kamu]. Saya suka [hal yang kamu suka]. Saya memiliki [benda/hewan] di [tempat]. Cita-cita saya adalah menjadi seorang [cita-cita kamu]. Senang bertemu denganmu!"**`
           },
           {
             id: 'sd-u1-s4',
-            type: 'dialogue',
-            title: 'Simple Conversation: My Toy Box',
-            dialogue: [
-              {
-                speaker: 'Budi',
-                text: 'Look! I have a new toy car.',
-                translation: 'Lihat! Aku punya mobil mainan baru.',
-                role: 'A'
-              },
-              {
-                speaker: 'Siti',
-                text: 'Wow, it is cool! What color is it?',
-                translation: 'Wow, keren sekali! Apa warnanya?',
-                role: 'B'
-              },
-              {
-                speaker: 'Budi',
-                text: 'It is green. I also have three blue marbles.',
-                translation: 'Warnanya hijau. Aku juga punya tiga kelereng biru.',
-                role: 'A'
-              },
-              {
-                speaker: 'Siti',
-                text: 'Beautiful! I love the color green.',
-                translation: 'Indah! Aku suka warna hijau.',
-                role: 'B'
-              }
-            ]
+            type: 'intro',
+            title: '2. CONTOH PERKENALAN',
+            introText: `Sekarang, lihat contoh di bawah ini.
+
+### **Contoh 1**
+
+> **"Hello! My name is Rani. I am from Jakarta. I am 8 years old. My hobby is drawing. I like ice cream. I have a cat at home. My dream is being a doctor. Nice to meet you!"**
+
+Artinya:
+
+> Halo! Nama saya Rani. Saya berasal dari Jakarta. Umur saya 8 tahun. Hobi saya menggambar. Saya suka es krim. Saya punya seekor kucing di rumah. Cita-cita saya adalah menjadi dokter. Senang bertemu denganmu!
+
+### **Contoh 2**
+
+> **"Hello! My name is Budi. I am from Bandung. I am 10 years old. My hobby is playing football. I like noodles. I have a bicycle at home. My dream is being a pilot. Nice to meet you!"**
+
+Artinya:
+
+> Halo! Nama saya Budi. Saya berasal dari Bandung. Umur saya 10 tahun. Hobi saya bermain sepak bola. Saya suka mi. Saya punya sepeda di rumah. Cita-cita saya adalah menjadi pilot. Senang bertemu denganmu!`
+          },
+          {
+            id: 'sd-u1-s5',
+            type: 'intro',
+            title: '3. BREAKING IT DOWN',
+            introText: `### **Bedah Kalimat Satu per Satu**
+
+Agar lebih mudah dipahami, kita akan belajar bagian-bagian kalimatnya satu per satu.
+
+---
+
+### **A. Menyebutkan Nama**
+
+## **My name is...**
+
+Kalimat ini digunakan untuk menyebutkan nama.
+
+**My name is...** artinya **Nama saya adalah...**
+
+Contoh:
+
+- **My name is Rani.**
+    Artinya: Nama saya Rani.
+- **My name is Budi.**
+    Artinya: Nama saya Budi.
+- **My name is Siti.**
+    Artinya: Nama saya Siti.
+
+Cara membaca:
+
+> **My name is** = /mai neim iz/
+
+Latihan:
+
+- My name is [nama kamu].
+
+---
+
+### **B. Menyebutkan Asal**
+
+## **I am from...**
+
+Kalimat ini digunakan untuk menyebutkan asal kota, daerah, atau negara.
+
+**I am from...** artinya **Saya berasal dari...**
+
+Contoh:
+
+- **I am from Jakarta.**
+    Artinya: Saya berasal dari Jakarta.
+- **I am from Surabaya.**
+    Artinya: Saya berasal dari Surabaya.
+- **I am from Indonesia.**
+    Artinya: Saya berasal dari Indonesia.
+
+Cara membaca:
+
+> **I am from** = /ai em from/
+
+Latihan:
+
+- I am from [asal kamu].
+
+---
+
+### **C. Menyebutkan Umur**
+
+## **I am ... years old**
+
+Kalimat ini digunakan untuk menyebutkan umur.
+
+**I am ... years old** artinya **Saya berumur ... tahun**
+
+Contoh:
+
+- **I am 7 years old.**
+    Artinya: Saya berumur 7 tahun.
+- **I am 9 years old.**
+    Artinya: Saya berumur 9 tahun.
+- **I am 12 years old.**
+    Artinya: Saya berumur 12 tahun.
+
+Cara membaca:
+
+> **I am** = /ai em/
+> **years old** = /yiers old/
+
+Latihan:
+
+- I am [umur kamu] years old.
+
+<aside>
+💡 Dalam bahasa Inggris, saat menyebutkan umur, kita memakai **I am**, bukan **I have**.
+</aside>
+
+---
+
+### **D. Menyebutkan Hobi**
+
+## **My hobby is...**
+
+Kalimat ini digunakan untuk menyebutkan hobi.
+
+**My hobby is...** artinya **Hobi saya adalah...**
+
+Contoh hobi:
+
+- drawing = menggambar
+- singing = bernyanyi
+- dancing = menari
+- reading = membaca
+- swimming = berenang
+- playing football = bermain sepak bola
+- playing games = bermain gim
+- cycling = bersepeda
+
+Contoh kalimat:
+
+- **My hobby is drawing.**
+    Artinya: Hobi saya menggambar.
+- **My hobby is singing.**
+    Artinya: Hobi saya bernyanyi.
+- **My hobby is playing football.**
+    Artinya: Hobi saya bermain sepak bola.
+
+Cara membaca:
+
+> **My hobby is** = /mai hobi iz/
+
+Latihan:
+
+- My hobby is [hobi kamu].
+
+---
+
+### **E. Menyebutkan Hal yang Disukai**
+
+## **I like...**
+
+Kalimat ini digunakan untuk menyebutkan sesuatu yang kamu suka.
+
+**I like...** artinya **Saya suka...**
+
+Kamu bisa menyebutkan:
+
+- makanan
+- minuman
+- warna
+- hewan
+- benda
+- kegiatan
+
+Contoh:
+
+- **I like fried rice.**
+    Artinya: Saya suka nasi goreng.
+- **I like chocolate.**
+    Artinya: Saya suka cokelat.
+- **I like cats.**
+    Artinya: Saya suka kucing.
+- **I like blue.**
+    Artinya: Saya suka warna biru.
+
+Cara membaca:
+
+> **I like** = /ai laik/
+
+Latihan:
+
+- I like [hal yang kamu suka].
+
+---
+
+### **F. Menyebutkan Benda atau Hewan yang Dimiliki**
+
+## **I have a...**
+
+Kalimat ini digunakan untuk menyebutkan benda atau hewan yang kamu punya.
+
+**I have a...** artinya **Saya punya sebuah/seekor...**
+
+Contoh:
+
+- **I have a cat.**
+    Artinya: Saya punya seekor kucing.
+- **I have a dog.**
+    Artinya: Saya punya seekor anjing.
+- **I have a pencil.**
+    Artinya: Saya punya sebuah pensil.
+- **I have a bicycle.**
+    Artinya: Saya punya sebuah sepeda.
+
+Cara membaca:
+
+> **I have a** = /ai hev e/
+
+Latihan:
+
+- I have a [benda/hewan].
+
+---
+
+### **G. Menyebutkan Tempat**
+
+## **at home / at school**
+
+Kata **at** digunakan untuk menunjukkan tempat.
+
+Contoh tempat:
+
+- **at home** = di rumah
+- **at school** = di sekolah
+- **in my bag** = di tas saya
+- **in my room** = di kamar saya
+
+Contoh kalimat:
+
+- **I have a cat at home.**
+    Artinya: Saya punya seekor kucing di rumah.
+- **I have a pencil in my bag.**
+    Artinya: Saya punya sebuah pensil di tas saya.
+- **I have a toy in my room.**
+    Artinya: Saya punya mainan di kamar saya.
+
+Latihan:
+
+- I have a [benda/hewan] at [tempat].
+
+---
+
+### **H. Menyebutkan Cita-Cita**
+
+## **My dream is being a...**
+
+Kalimat ini digunakan untuk menyebutkan cita-cita.
+
+**My dream is being a...** artinya **Cita-cita saya adalah menjadi seorang...**
+
+Contoh cita-cita:
+
+- doctor = dokter
+- teacher = guru
+- pilot = pilot
+- police officer = polisi
+- firefighter = pemadam kebakaran
+- chef = koki
+- artist = seniman
+- football player = pemain sepak bola
+- singer = penyanyi
+
+Contoh kalimat:
+
+- **My dream is being a doctor.**
+    Artinya: Cita-cita saya adalah menjadi dokter.
+- **My dream is being a teacher.**
+    Artinya: Cita-cita saya adalah menjadi guru.
+- **My dream is being a pilot.**
+    Artinya: Cita-cita saya adalah menjadi pilot.
+
+Cara membaca:
+
+> **My dream is being a** = /mai drim iz bi-ing e/
+
+Latihan:
+
+- My dream is being a [cita-cita kamu].`
+          },
+          {
+            id: 'sd-u1-s6',
+            type: 'intro',
+            title: '4. KOSAKATA PENTING & 5. POLA KALIMAT MUDAH',
+            introText: `| English | Bahasa Indonesia |
+| --- | --- |
+| Hello | Halo |
+| My name is | Nama saya adalah |
+| I am from | Saya berasal dari |
+| I am | Saya adalah / Saya berumur |
+| years old | tahun |
+| My hobby is | Hobi saya adalah |
+| I like | Saya suka |
+| I have | Saya punya |
+| at home | di rumah |
+| at school | di sekolah |
+| My dream is | Cita-cita saya adalah |
+| Nice to meet you | Senang bertemu denganmu |
+
+---
+
+Gunakan pola ini untuk membuat perkenalanmu sendiri.
+
+1. **Hello!**  
+    Halo!
+2. **My name is [nama kamu].**  
+    Nama saya adalah [nama kamu].
+3. **I am from [asal kamu].**  
+    Saya berasal dari [asal kamu].
+4. **I am [umur kamu] years old.**  
+    Saya berumur [umur kamu] tahun.
+5. **My hobby is [hobi kamu].**  
+    Hobi saya adalah [hobi kamu].
+6. **I like [hal yang kamu suka].**  
+    Saya suka [hal yang kamu suka].
+7. **I have a [benda/hewan] at [tempat].**  
+    Saya punya [benda/hewan] di [tempat].
+8. **My dream is being a [cita-cita kamu].**  
+    Cita-cita saya adalah menjadi [cita-cita kamu].
+9. **Nice to meet you!**  
+    Senang bertemu denganmu!`
+          },
+          {
+            id: 'sd-u1-s7',
+            type: 'intro',
+            title: "6. LET'S PRACTICE",
+            introText: ''
+          },
+          {
+            id: 'sd-u1-s8',
+            type: 'intro',
+            title: '8. LATIHAN MENYUSUN KALIMAT',
+            introText: ''
+          },
+          {
+            id: 'sd-u1-s9',
+            type: 'intro',
+            title: '11. CATATAN UNTUK TUTOR & 12. REVIEW CEPAT',
+            introText: `Gunakan bahasa yang sederhana dan beri contoh dekat dengan kehidupan anak-anak.
+
+### **Saran Mengajar untuk Tutor:**
+
+1. Baca contoh kalimat terlebih dahulu.
+2. Minta anak menirukan satu kalimat pendek.
+3. Jelaskan arti kalimat dalam bahasa Indonesia.
+4. Beri contoh dengan nama anak.
+5. Jangan terlalu cepat.
+6. Ulangi kata sulit beberapa kali.
+7. Puji anak setelah mencoba berbicara.
+8. Untuk kelas 1-2 SD, fokus pada meniru dan mengisi nama/umur.
+9. Untuk kelas 3-4 SD, ajak anak membuat kalimat lengkap.
+10. Untuk kelas 5-6 SD, ajak anak berbicara tanpa membaca teks terlalu banyak.
+
+---
+
+### **12. REVIEW CEPAT**
+
+Hari ini kita belajar:
+
+- **My name is...** = Nama saya adalah...
+- **I am from...** = Saya berasal dari...
+- **I am ... years old** = Saya berumur ... tahun
+- **My hobby is...** = Hobi saya adalah...
+- **I like...** = Saya suka...
+- **I have a...** = Saya punya...
+- **My dream is being a...** = Cita-cita saya adalah menjadi...
+
+🌟 Kamu hebat! Sekarang kamu sudah bisa memperkenalkan diri dalam bahasa Inggris. Terus latihan, ya!`
           }
         ],
         quiz: [
           {
             id: 'sd-u1-q1',
-            question: 'Bahasa Inggris dari "Buku Biru" adalah...',
-            options: ['Book blue', 'Blue book', 'Blue books', 'A blue'],
+            question: 'My name is Riko. Artinya adalah...',
+            options: ['Saya suka Riko.', 'Nama saya Riko.', 'Saya berasal dari Riko.'],
             correctAnswer: 1,
-            explanation: 'Sesuai aturan Adjective + Noun, kata sifat (warna "Blue") diletakkan sebelum kata benda ("book"). Maka yang benar adalah "Blue book".'
+            explanation: '"My name is Riko" artinya "Nama saya Riko".'
           },
           {
             id: 'sd-u1-q2',
-            question: 'Siti berkata: "I have three marbles". Berapa kelereng yang dimiliki Siti?',
-            options: ['1 kelereng', '2 kelereng', '3 kelereng', '4 kelereng'],
-            correctAnswer: 2,
-            explanation: '"Three" artinya tiga (3).'
+            question: 'I am 8 years old. Artinya adalah...',
+            options: ['Saya berumur 8 tahun.', 'Saya punya 8 tahun.', 'Saya suka angka 8.'],
+            correctAnswer: 0,
+            explanation: '"I am 8 years old" artinya "Saya berumur 8 tahun". Untuk menyebutkan umur kita menggunakan "I am".'
+          },
+          {
+            id: 'sd-u1-q3',
+            question: 'I like apples. Artinya adalah...',
+            options: ['Saya punya apel.', 'Saya suka apel.', 'Nama saya apel.'],
+            correctAnswer: 1,
+            explanation: '"I like" artinya "Saya suka", sedangkan "apples" adalah apel. Jadi artinya "Saya suka apel".'
+          },
+          {
+            id: 'sd-u1-q4',
+            question: 'My hobby is swimming. Artinya adalah...',
+            options: ['Cita-cita saya berenang.', 'Hobi saya berenang.', 'Saya berasal dari kolam renang.'],
+            correctAnswer: 1,
+            explanation: '"My hobby is swimming" artinya "Hobi saya berenang". "Hobby" artinya hobi, "swimming" artinya berenang.'
           }
         ]
       },

@@ -8,6 +8,8 @@ import { Volume2, BookOpen, Sparkles, MessageCircle, Info, ChevronRight, HelpCir
 import { LearningUnit, ModuleSection, DialogueLine, ExpressionItem } from '../types';
 import VocabularyCard from './VocabularyCard';
 import { TYPOGRAPHY_HIERARCHY } from '../data/designSystem';
+import InteractiveCardBuilder from './InteractiveCardBuilder';
+import WordScramblePractice from './WordScramblePractice';
 
 interface UnitViewerProps {
   unit: LearningUnit;
@@ -18,6 +20,175 @@ interface UnitViewerProps {
     hover: string;
     text: string;
   };
+}
+
+// Helper to render inline styles like bold
+function renderInlineStyles(text: string) {
+  const parts = text.split(/(\*\*.*?\*\*)/g);
+  return parts.map((part, i) => {
+    if (part.startsWith('**') && part.endsWith('**')) {
+      return (
+        <strong key={i} className="font-bold text-slate-900 font-sans">
+          {part.slice(2, -2)}
+        </strong>
+      );
+    }
+    return part;
+  });
+}
+
+// Markdown-like block content renderer
+function renderMarkdownContent(text: string | undefined) {
+  if (!text) return null;
+  const blocks = text.split(/\n\s*\n/);
+  return (
+    <div className="space-y-3.5 font-sans text-slate-600 leading-relaxed text-sm md:text-base">
+      {blocks.map((block, idx) => {
+        const trimmed = block.trim();
+        if (!trimmed) return null;
+
+        // Aside info box
+        if (trimmed.startsWith('<aside>') || trimmed.includes('💡') || trimmed.startsWith('<aside>💡')) {
+          const content = trimmed.replace(/<\/?aside>/g, '').replace('💡', '').trim();
+          return (
+            <div key={idx} className="bg-amber-50/75 border border-amber-200/60 p-4 rounded-2xl flex items-start gap-2.5 my-3">
+              <span className="text-base">💡</span>
+              <div className="text-xs md:text-sm text-amber-900 leading-relaxed font-sans font-medium">
+                {renderInlineStyles(content)}
+              </div>
+            </div>
+          );
+        }
+
+        // Custom callout with 🌟 emoji
+        if (trimmed.includes('🌟') || trimmed.includes('<aside>🌟')) {
+          const content = trimmed.replace(/<\/?aside>/g, '').replace('🌟', '').trim();
+          return (
+            <div key={idx} className="bg-emerald-50/75 border border-emerald-200/60 p-4 rounded-2xl flex items-start gap-2.5 my-3">
+              <span className="text-base animate-bounce">🌟</span>
+              <div className="text-xs md:text-sm text-emerald-800 leading-relaxed font-sans font-semibold">
+                {renderInlineStyles(content)}
+              </div>
+            </div>
+          );
+        }
+
+        // Horizontal Rule
+        if (trimmed === '---') {
+          return <hr key={idx} className="my-5 border-slate-100" />;
+        }
+
+        // Headers
+        if (trimmed.startsWith('###')) {
+          const content = trimmed.replace(/^###\s*/, '').replace(/\*\*/g, '');
+          return (
+            <h3 key={idx} className="font-display font-bold text-sm md:text-base text-slate-800 mt-5 mb-1.5 uppercase tracking-wider">
+              {renderInlineStyles(content)}
+            </h3>
+          );
+        }
+        if (trimmed.startsWith('##')) {
+          const content = trimmed.replace(/^##\s*/, '').replace(/\*\*/g, '');
+          return (
+            <h2 key={idx} className="font-display font-semibold text-base md:text-lg lg:text-xl text-slate-800 mt-6 mb-3 border-b border-slate-100 pb-1.5">
+              {renderInlineStyles(content)}
+            </h2>
+          );
+        }
+        if (trimmed.startsWith('#')) {
+          const content = trimmed.replace(/^#\s*/, '').replace(/\*\*/g, '');
+          return (
+            <h1 key={idx} className="font-display font-bold text-lg md:text-xl lg:text-2xl tracking-tight text-slate-800 mt-8 mb-4">
+              {renderInlineStyles(content)}
+            </h1>
+          );
+        }
+
+        // Blockquotes
+        if (trimmed.startsWith('>')) {
+          const innerText = trimmed.replace(/^>\s*/, '').replace(/\*\*/g, '').replace(/^"|"$/g, '').trim();
+          return (
+            <blockquote key={idx} className="font-sans italic text-sm md:text-base text-slate-700 bg-slate-50 border-l-4 border-indigo-500 pl-4 py-2 my-2.5 rounded-r-xl block">
+              "{renderInlineStyles(innerText)}"
+            </blockquote>
+          );
+        }
+
+        // Bullet lists
+        if (trimmed.startsWith('- ') || trimmed.startsWith('* ')) {
+          const items = trimmed.split('\n').map(line => line.replace(/^[-*]\s*/, '').trim());
+          return (
+            <ul key={idx} className="list-disc pl-5 space-y-1 my-3">
+              {items.map((item, i) => (
+                <li key={i} className="text-sm md:text-base text-slate-600 font-sans leading-relaxed">
+                  {renderInlineStyles(item)}
+                </li>
+              ))}
+            </ul>
+          );
+        }
+
+        // Numbered lists
+        if (/^\d+\.\s/.test(trimmed)) {
+          const items = trimmed.split('\n').map(line => line.replace(/^\d+\.\s*/, '').trim());
+          return (
+            <ol key={idx} className="list-decimal pl-5 space-y-1 my-3">
+              {items.map((item, i) => (
+                <li key={i} className="text-sm md:text-base text-slate-600 font-sans leading-relaxed">
+                  {renderInlineStyles(item)}
+                </li>
+              ))}
+            </ol>
+          );
+        }
+
+        // Tables
+        if (trimmed.startsWith('|')) {
+          const lines = trimmed.split('\n').filter(l => l.trim().startsWith('|'));
+          if (lines.length >= 2) {
+            const headers = lines[0].split('|').map(s => s.trim()).filter(Boolean);
+            const rows = lines.slice(2).map(line => {
+              return line.split('|').map(s => s.trim()).filter(Boolean);
+            });
+
+            return (
+              <div key={idx} className="overflow-x-auto my-5 rounded-xl border border-slate-100 shadow-sm">
+                <table className="min-w-full divide-y divide-slate-100">
+                  <thead className="bg-slate-50">
+                    <tr>
+                      {headers.map((h, i) => (
+                        <th key={i} className="px-4 py-2.5 text-left text-xs font-mono font-bold uppercase tracking-wider text-slate-500">
+                          {h}
+                        </th>
+                      ))}
+                    </tr>
+                  </thead>
+                  <tbody className="bg-white divide-y divide-slate-50">
+                    {rows.map((row, rIdx) => (
+                      <tr key={rIdx} className="hover:bg-slate-50/50">
+                        {row.map((cell, cIdx) => (
+                          <td key={cIdx} className="px-4 py-2.5 text-xs md:text-sm text-slate-600 font-sans">
+                            {renderInlineStyles(cell)}
+                          </td>
+                        ))}
+                      </tr>
+                    ))}
+                  </tbody>
+                </table>
+              </div>
+            );
+          }
+        }
+
+        // Default paragraph
+        return (
+          <p key={idx} className="text-sm md:text-base text-slate-600 leading-relaxed font-normal my-1">
+            {renderInlineStyles(trimmed)}
+          </p>
+        );
+      })}
+    </div>
+  );
 }
 
 // Wrapper for inspectable design system items
@@ -62,6 +233,14 @@ export default function UnitViewer({ unit, colorTheme }: UnitViewerProps) {
   };
 
   const renderSection = (section: ModuleSection) => {
+    // Custom interactive components mapping by section ID
+    if (section.id === 'sd-u1-s7') {
+      return <InteractiveCardBuilder key={section.id} />;
+    }
+    if (section.id === 'sd-u1-s8') {
+      return <WordScramblePractice key={section.id} />;
+    }
+
     switch (section.type) {
       case 'intro':
         return (
@@ -69,9 +248,9 @@ export default function UnitViewer({ unit, colorTheme }: UnitViewerProps) {
             <Inspectable token="h1" active={inspectorActive}>
               {section.title}
             </Inspectable>
-            <Inspectable token="body" active={inspectorActive}>
-              {section.introText}
-            </Inspectable>
+            <div>
+              {renderMarkdownContent(section.introText)}
+            </div>
           </div>
         );
 
