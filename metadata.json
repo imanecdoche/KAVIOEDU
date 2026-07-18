@@ -1,0 +1,6 @@
+{
+  "name": "English Learning Portal",
+  "description": "Modul pembelajaran bahasa Inggris interaktif per level dari SD, SMP, SMA, hingga UMUM dengan design system, hirarki visual, dan unit pembelajaran yang terstruktur.",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}
